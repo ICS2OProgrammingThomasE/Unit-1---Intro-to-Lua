@@ -22,3 +22,24 @@ redButton.y = display.contentHeight/2
 redButton.isVisible = false
 
 -- create text object, set its position and make it invisible
+local textObject = display.newText ("Clicked!", 0, 0, nil, 50)
+textObject.x = display.contentWidth/2
+textObject.y = display.contentHeight/3
+textObject:setTextColor (1, 1, 0)
+textObject.isVisible = false
+
+local function BLueButtonListener(touch)
+	if (touch.phase == "began") then
+		blueButton.isVisible = false
+		redButton.isVisible = true
+		textObject.isVisible = true
+	end
+
+	if (touch.phase == "ended") then 
+		blueButton.isVisible = true
+		redButton.isVisible = false
+		textObject.isVisible = true
+	end
+end
+
+blueButton:addEventListener("touch", BLueButtonListener)

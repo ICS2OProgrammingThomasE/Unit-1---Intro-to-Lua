@@ -9,6 +9,13 @@ display.setStatusBar(display.HiddenStatusBar)
 --global variables 
 scrollSpeed = 3
 
+
+local backgroundMusic = audio.loadSound( "Sounds/music.mp3") -- setting a variable
+local backgroundMusicChannel
+
+correctSoundChannel = audio.play(backgroundMusic)
+
+loop = -1
 -- background image with width and height 
 local backgroundImage = display.newImageRect("Images/background.png", 2048, 1536)
 
