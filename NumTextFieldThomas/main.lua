@@ -20,6 +20,10 @@ local correctObject
 local numericField
 local randomNumber1
 local randomNumber2
+local randomNumber3
+local ramdomNumber4
+local divQuestion
+local srQuestion
 local tempRandomNumber3
 local userAnswer
 local correctAnswer
@@ -71,6 +75,7 @@ local function UpdateTime()
 		-- reset the number of seconds left
 		secondsLeft = totalSeconds
 		lives = lives - 1
+		AskQuestion()
 
 		-- *** IF THERE ARE NO LIVES LEFT, PLAY A LOSE SOUND, SHOW LOSE IMAGE
 		-- AND CANCEL THE TIMER REMOVE THE THIRD HEART BY MAKING IT INVISIBLE 
@@ -83,47 +88,7 @@ local function UpdateTime()
 		elseif (lives == 0) then 
 			heart1.isVisible = false
 		elseif (lives == 0) then
-
 		end
-
-		-- asks a new question
-		local function AskQuestion()
-	
-	-- generate 2 random numbers between a max. and a min. number
-	randomNumber1 = math.random(1, 10)
-	randomNumber2 = math.random(1, 10)
-
-
-	-- chooses a random operator
-	randomOperator = math.random(1, 3)
-
-	if (randomOperator == 1) then
-		correctAnswer = randomNumber1 + randomNumber2
-
-		-- create question in text object
-		questionObject.text = randomNumber1 .. " + " .. randomNumber2 .. " = "
-
-	elseif (randomOperator == 2) then
-		
-		if (randomNumber1 < randomNumber2) then
-			tempRandomNumber3 = randomNumber1
-			randomNumber1 = randomNumber2
-			randomNumber2 = tempRandomNumber3
-		end
-
-		correctAnswer = randomNumber1 - randomNumber2
-
-		--create question in text object
-		questionObject.text = randomNumber1 .. " - " .. randomNumber2 .. " = "
-		
-	
-	elseif (randomOperator == 3) then
-		correctAnswer = randomNumber1 * randomNumber2
-
-		--create question in text object
-		questionObject.text = randomNumber1 .. " * " .. randomNumber2 .. " = "
-	end	
-end
 	end
 end
 
@@ -133,16 +98,17 @@ local function StartTimer()
 	countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
 end
 
-local function AskQuestion()
-	-- generate 2 random numbers between a max. and a min. number
-	randomNumber1 = math.random(1, 10)
-	randomNumber2 = math.random(1, 10)
+local function EndTimer()
+	timer.cancel(countDownTimer)
+end
 
-	-- Starts the timer
-	StartTimer()
+function AskQuestion()
+	-- generate 2 random numbers between a max. and a min. number
+	randomNumber1 = math.random(1, 20)
+	randomNumber2 = math.random(1, 20)
 
 	-- chooses a random operator
-	randomOperator = math.random(1, 3)
+	randomOperator = math.random(1, 4)
 
 	if (randomOperator == 1) then
 		correctAnswer = randomNumber1 + randomNumber2
@@ -169,6 +135,14 @@ local function AskQuestion()
 
 		--create question in text object
 		questionObject.text = randomNumber1 .. " * " .. randomNumber2 .. " = "
+
+	elseif (randomOperator == 4) then
+		randomNumber3 = math.random(1, 10)
+		ramdomNumber4 = math.random(1, 10)
+		divQuestion = randomNumber3 * ramdomNumber4
+		correctAnswer = divQuestion / randomNumber3
+		questionObject.text = divQuestion .. " ÷ " .. randomNumber3 .." = "
+
 	end	
 end
 
@@ -203,6 +177,7 @@ local function numericFieldListener( event )
 			points = points + 1
 			pointsObject.text = "Points = " .. points
 			correctSoundChannel = audio.play(correctSound)
+			secondsLeft = 10
 			if (points == 5) then
 				
 				--hide everything
@@ -212,6 +187,12 @@ local function numericFieldListener( event )
 				questionObject.isVisible = false
 				livesObject.isVisible = false
 				pointsObject.isVisible = false
+				clockText.isVisible = false
+				heart1.isVisible = false
+				heart2.isVisible = false
+				heart3.isVisible = false
+				heart4.isVisible = false
+				EndTimer()
 				--display you lose
 				winObject.isVisible = true
 				display.setDefault("background", 255/255, 255/255, 255/255 )
@@ -223,7 +204,17 @@ local function numericFieldListener( event )
 			timer.performWithDelay(2000, HideIncorrect)
 			event.target.text = " "			
 			lives = lives - 1
+			if (lives == 3) then
+				heart4.isVisible = false
+			elseif (lives == 2) then
+				heart3.isVisible = false
+			elseif (lives == 1) then
+				heart2.isVisible = false
+			elseif (lives == 0) then 
+				heart1.isVisible = false
+			end
 			livesObject.text = "Lives = " .. lives 
+			secondsLeft = 10
 			wrongSoundChannel = audio.play(wrongSound)
 
 			if (lives == 0) then
@@ -235,9 +226,16 @@ local function numericFieldListener( event )
 				questionObject.isVisible = false
 				livesObject.isVisible = false
 				pointsObject.isVisible = false
+				clockText.isVisible = false
+				heart1.isVisible = false
+				heart2.isVisible = false
+				heart3.isVisible = false
+				heart4.isVisible = false
+				EndTimer()
 				-- display you lose
 				loseObject.isVisible = true
 				display.setDefault("background", 0/255, 0/255, 0/255 )
+
 			end
 		end
 	end	
@@ -314,4 +312,4 @@ heart1.y = display.contentHeight * 1 / 7
 
 -- call the function to ask the question
 AskQuestion()
-
+StartTimer()
