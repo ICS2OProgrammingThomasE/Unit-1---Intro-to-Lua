@@ -75,7 +75,7 @@ local function firstBall()
 	local Ball1 = display.newImage("Images/super_ball.png", 0, 0)
 
 	-- add to physics
-	--physics.addBody(ball1, {density=1.0, friction=0.5, bounce=0.3, radius=25})
+	physics.addBody(ball1, {density=1.0, friction=0.5, bounce=0.3, radius=25})
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ end
 -- create the second ball
 local function secondBall()
 	-- creating second ball
-	physics.addBodyBall2 = display.newImage("Images/super_ball.png", 0, 0)
+	local Ball2 = display.newImage("Images/super_ball.png", 0, 0)
 
 	-- add to physics
 	physics.addBody(ball2, {density=1.0, friction=0.5, bounce=0.3, radius=12.5})
@@ -94,4 +94,4 @@ end
 -- TIMER DELAYS - call each function after the given millisecond
 ---------------------------------------------------------------------------------------------
 timer.performWithDelay( 0, firstBall())
-timer.performWithDelay( 500, secondBall)
+timer.performWithDelay( 500, secondBall())
